@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course Notes</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { margin-bottom: .25rem; }
+  .sub { color: #666; margin-bottom: 1.5rem; }
+  input { width: 100%; padding: .6rem; font-size: 1rem; margin-bottom: 1.5rem; box-sizing: border-box; }
+  details { border: 1px solid #ddd; border-radius: 8px; margin-bottom: .75rem; padding: .5rem 1rem; }
+  summary { font-weight: 600; cursor: pointer; padding: .4rem 0; }
+  ul { list-style: none; padding: 0; margin: .5rem 0; }
+  li { display: flex; justify-content: space-between; align-items: center; padding: .5rem 0; border-top: 1px solid #eee; }
+  .tag { font-size: .75rem; background: #eef; border-radius: 4px; padding: 2px 6px; margin-right: .5rem; }
+  .due { color: #b00; font-size: .85rem; margin-left: .5rem; }
+  a.dl { text-decoration: none; background: #0969da; color: #fff; padding: .35rem .8rem; border-radius: 6px; font-size: .9rem; }
+</style>
+</head>
+<body>
+<h1>Course Notes and Assignments</h1>
+<div class="sub">Department of Computer Science and Engineering</div>
+<input id="q" placeholder="Search topics, notes, assignments...">
+<div id="list">Loading...</div>
+
+<script>
+let data = [];
+fetch("topics.json").then(r => r.json()).then(d => { data = d; render(""); })
+  .catch(() => document.getElementById("list").textContent = "Could not load topics.json");
+
+function render(filter) {
+  const f = filter.toLowerCase();
+  const html = data.map(t => {
+    const items = t.items.filter(i =>
+      !f || t.title.toLowerCase().includes(f) ||
+      i.label.toLowerCase().includes(f) || i.type.toLowerCase().includes(f));
+    if (!items.length) return "";
+    return `<details ${f ? "open" : ""}><summary>${t.title}</summary><ul>` +
+      items.map(i => `<li><span><span class="tag">${i.type}</span>${i.label}` +
+        (i.due ? `<span class="due">Due: ${i.due}</span>` : "") + `</span>` +
+        `<a class="dl" href="${i.file}" download>Download</a></li>`).join("") +
+      `</ul></details>`;
+  }).join("");
+  document.getElementById("list").innerHTML = html || "No results.";
+}
+document.getElementById("q").addEventListener("input", e => render(e.target.value));
+</script>
+</body>
+</html>
