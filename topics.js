@@ -1,0 +1,16 @@
+// Edit this file to add material. Keep the commas and quotes exactly as shown.
+const TOPICS = [
+  {
+    title: "Module 1: Introduction",
+    items: [
+      { label: "Notes", file: "files/module1/notes.pdf", type: "Notes" },
+      { label: "Assignment 1", file: "files/module1/assignment1.pdf", type: "Assignment", due: "20 Nov 2026" }
+    ]
+  },
+  {
+    title: "Module 2: Next Topic",
+    items: [
+      { label: "Notes", file: "files/module2/notes.pdf", type: "Notes" }
+    ]
+  }
+];

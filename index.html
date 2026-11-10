@@ -24,10 +24,11 @@
 <input id="q" placeholder="Search topics, notes, assignments...">
 <div id="list">Loading...</div>
 
+<script src="topics.js"></script>
 <script>
-let data = [];
-fetch("topics.json").then(r => r.json()).then(d => { data = d; render(""); })
-  .catch(() => document.getElementById("list").textContent = "Could not load topics.json");
+const data = (typeof TOPICS !== "undefined") ? TOPICS : [];
+if (!data.length) document.getElementById("list").textContent = "Could not load topics.js";
+else render("");
 
 function render(filter) {
   const f = filter.toLowerCase();

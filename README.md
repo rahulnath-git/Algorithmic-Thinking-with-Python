@@ -4,7 +4,7 @@ A simple GitHub Pages site with download links for notes and assignments.
 
 ## Adding material
 1. Put the file in `files/<module>/` (lowercase names, no spaces).
-2. Add one entry to `topics.json`.
+2. Add one entry to `topics.js`.
 3. Commit. The site updates in a minute or two.
 
 ## Publishing
