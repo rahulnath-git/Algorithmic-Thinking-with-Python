@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Algorithmic Thinking in Python For 1st Semester Students</title>
+<style>
+  :root {
+    --font-stack: Calibri, Carlito, "Segoe UI", Candara, Arial, sans-serif;
+    --text-main: #111111;
+    --text-muted: #555555;
+    --border-line: #cccccc;
+    --border-light: #e5e5e5;
+    --bg-zebra: #f9f9f9;
+    --tab-inactive: #f5f5f5;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-stack);
+    background: #ffffff;
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Shrinking Top Header */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-line);
+    padding: 0.8rem 1.25rem;
+    transition: padding 0.15s ease, height 0.15s ease;
+  }
+
+  .site-header.scrolled {
+    padding: 0 1.25rem;
+    height: 8px;
+    min-height: 8px;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .header-inner {
+    max-width: 940px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .college-logo {
+    display: block;
+    height: 52px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    transition: height 0.15s ease, opacity 0.12s ease;
+  }
+
+  .site-header.scrolled .college-logo {
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Page Wrapper */
+  .container {
+    max-width: 940px;
+    margin: 1.8rem auto 4.5rem;
+    padding: 0 1.25rem;
+  }
+
+  .dept-header {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  h1 {
+    font-size: 1.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.5rem 0;
+    color: #000000;
+    letter-spacing: -0.01em;
+  }
+
+  /* Faculty Contact: Clean unboxed layout with mobile-spaced tap targets */
+  .faculty-info {
+    font-size: 1.02rem;
+    margin: 0.75rem 0 1.6rem 0;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border-line);
+    color: #222222;
+    line-height: 1.7;
+  }
+
+  .faculty-info a {
+    color: #000000;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    display: inline-block;
+    padding: 2px 1px;
+  }
+
+  .faculty-info a:hover {
+    color: #555555;
+  }
+
+  /* Mobile-first Equal Tabs */
+  .tabs-nav {
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid var(--border-line);
+    margin-bottom: 2rem;
+    gap: 0;
+  }
+
+  .tab-btn {
+    flex: 1;
+    background: var(--tab-inactive);
+    border: 1px solid var(--border-line);
+    border-bottom: none;
+    font-family: var(--font-stack);
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0.75rem 0.5rem;
+    min-height: 48px; /* Touch target standard */
+    cursor: pointer;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: -2px;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+
+  .tab-btn:first-child {
+    border-top-left-radius: 4px;
+    border-right: none;
+  }
+
+  .tab-btn:last-child {
+    border-top-right-radius: 4px;
+  }
+
+  .tab-btn:hover {
+    color: #000000;
+    background: #eaeaea;
+  }
+
+  .tab-btn.active {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 700;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #ffffff;
+  }
+
+  /* Tab View Toggle */
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Academic Information Sections */
+  .cis-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .cis-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.85rem 0;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-line);
+  }
+
+  /* Overview metadata sheet */
+  .meta-sheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.9rem 1.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.98rem;
+  }
+
+  .meta-item strong {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.15rem;
+  }
+
+  /* Responsive Tables with Mobile Touch Support */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0.6rem 0;
+    border: 1px solid var(--border-line);
+  }
+
+  .scroll-hint {
+    display: none;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    font-style: italic;
+  }
+
+  table.academic-table {
+    width: 100%;
+    min-width: 580px;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    background: #ffffff;
+  }
+
+  table.academic-table th,
+  table.academic-table td {
+    padding: 0.55rem 0.65rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+    text-align: left;
+  }
+
+  table.academic-table th {
+    font-weight: 700;
+    border-bottom: 1.5px solid #000000;
+    background-color: var(--bg-zebra);
+    white-space: nowrap;
+  }
+
+  table.academic-table tr:hover {
+    background-color: var(--bg-zebra);
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .table-note {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+  }
+
+  .simple-list {
+    margin: 0.5rem 0 1rem 1.2rem;
+    padding: 0;
+  }
+
+  .simple-list li {
+    margin-bottom: 0.45rem;
+    font-size: 0.95rem;
+  }
+
+  /* Downloads View */
+ .search-box {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--font-stack);
+  font-size: 1.05rem;
+  color: #000000;
+  background-color: #f7f7f7;
+  border: 2px solid #111111;
+  border-radius: 4px;
+  margin-bottom: 1.75rem;
+  min-height: 52px;
+  box-shadow: 1px 1px 0px #111111;
+  outline: none;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-box::placeholder {
+  color: #555555;
+  font-weight: 500;
+}
+
+.search-box:focus {
+  background-color: #ffffff;
+  border-color: #000000;
+  box-shadow: 1px 1x 0px #000000;
+}
+
+
+  details {
+    border-top: 1px solid var(--border-line);
+  }
+
+  details:last-child {
+    border-bottom: 1px solid var(--border-line);
+  }
+
+  summary {
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 0.85rem 0.2rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 50px; /* Big thumb target */
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: "+";
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1;
+    padding-left: 0.5rem;
+  }
+
+  details[open] summary::after {
+    content: "–";
+  }
+
+  ul.file-list {
+    list-style: none;
+    padding: 0 0 0.8rem 0;
+    margin: 0;
+  }
+
+  ul.file-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 0.4rem;
+    border-bottom: 1px dotted var(--border-light);
+    gap: 0.85rem;
+  }
+
+  ul.file-list li:last-child {
+    border-bottom: none;
+  }
+
+  .file-info-col {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.55rem;
+  }
+
+  .file-type {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .file-title {
+    font-size: 0.98rem;
+    font-weight: 500;
+  }
+
+  .file-due {
+    font-size: 0.84rem;
+    color: #555555;
+    font-style: italic;
+  }
+
+  /* Solid Noticeable Boxed Download Button */
+  a.download-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-stack);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    padding: 0.45rem 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+    min-height: 38px;
+    transition: background-color 0.15s ease;
+  }
+
+  a.download-link:hover,
+  a.download-link:active {
+    background-color: #333333;
+    border-color: #333333;
+    color: #ffffff;
+  }
+
+  .status-message {
+    padding: 1.5rem 0;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Mobile Layout Adaptation */
+  @media (max-width: 640px) {
+    .site-header {
+      padding: 0.65rem 1rem;
+    }
+    .college-logo {
+      height: 40px;
+    }
+    .container {
+      margin-top: 1.4rem;
+      padding: 0 1rem;
+    }
+    h1 {
+      font-size: 1.55rem;
+      line-height: 1.25;
+    }
+    .faculty-info {
+      font-size: 0.95rem;
+    }
+    .meta-sheet {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+    .scroll-hint {
+      display: block; /* Guides mobile readers */
+    }
+    /* Full-width thumb-friendly download rows */
+    ul.file-list li {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.65rem;
+      padding: 0.85rem 0.2rem;
+    }
+    a.download-link {
+      width: 100%;
+      min-height: 44px; /* Standard accessible tap target */
+      font-size: 0.95rem;
+    }
+    .simple-list {
+      margin-left: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <img 
+      src="logo.png" 
+      alt="Ahalia School of Engineering & Technology" 
+      class="college-logo"
+    >
+  </div>
+</header>
+
+<main class="container">
+  <div class="dept-header">Department of Computer Science and Engineering</div>
+  <h1>Algorithmic Thinking in Python For 1st Semester Students</h1>
+
+  <!-- Faculty in Charge Details (Clean, unboxed) -->
+  <div class="faculty-info">
+    <strong>Faculty in charge:</strong> H A Rahulnath, Assistant Professor<br>
+    <strong>Contact Number:</strong> <a href="tel:8281583996">8281583996</a> &nbsp;|&nbsp; 
+    <strong>Email:</strong> <a href="mailto:rahulnath.ha@ahalia.ac.in">rahulnath.ha@ahalia.ac.in</a>
+  </div>
+
+  <!-- Mobile-Optimized Tab Switcher -->
+  <nav class="tabs-nav" role="tablist">
+    <button class="tab-btn active" data-tab="tab-course-info" type="button" role="tab">Course Info</button>
+    <button class="tab-btn" data-tab="tab-downloads" type="button" role="tab">Downloads</button>
+  </nav>
+
+  <!-- TAB 1: COURSE INFO (Main Landing Tab) -->
+  <div id="tab-course-info" class="tab-content active" role="tabpanel">
+
+    <div class="cis-group">
+      <div class="cis-title">Course Overview</div>
+      <div class="meta-sheet">
+        <div class="meta-item">
+          <strong>Subject Name</strong>
+          Algorithmic Thinking with Python
+        </div>
+        <div class="meta-item">
+          <strong>Batch &amp; Semester</strong>
+          S1 ECE (Batch 2026–30)
+        </div>
+        <div class="meta-item">
+          <strong>Academic Year</strong>
+          2026–27
+        </div>
+        <div class="meta-item">
+          <strong>Structure (L-T-P-R)</strong>
+          3 - 0 - 2 - 0
+        </div>
+        <div class="meta-item">
+          <strong>Credits</strong>
+          4 Credits
+        </div>
+        <div class="meta-item">
+          <strong>Year of Introduction</strong>
+          2024
+        </div>
+      </div>
+      <div style="font-size: 0.95rem; margin-top: 0.5rem;">
+        <strong>Prerequisites:</strong> Basic mathematics and logical reasoning; no prior programming experience required[cite: 2].
+      </div>
+    </div>
+
+    <!-- Course Outcomes -->
+    <div class="cis-group">
+      <div class="cis-title">Course Outcomes (COs)</div>
+      <div class="scroll-hint">&larr; Swipe sideways to view complete table &rarr;</div>
+      <div class="table-responsive">
+        <table class="academic-table">
+          <thead>
+            <tr>
+              <th style="width: 55px;">CO</th>
+              <th>Outcome Description</th>
+              <th style="width: 140px;" class="center">Cognitive Level</th>
+              <th style="width: 100px;" class="center">Target (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CO1</strong></td>
+              <td>Apply systematic problem solving strategies (Pólya's method, creative and heuristic techniques) to analyse and frame real-world problems.</td>
+              <td class="center">K3</td>
+              <td class="center">60%</td>
+            </tr>
+            <tr>
+              <td><strong>CO2</strong></td>
+              <td>Apply computational thinking (decomposition, pattern recognition, abstraction) to design algorithms using flowcharts and pseudocode.</td>
+              <td class="center">K3</td>
+              <td class="center">60%</td>
+            </tr>
+            <tr>
+              <td><strong>CO3</strong></td>
+              <td>Implement algorithmic solutions in Python using control structures, functions and built-in data structures.</td>
+              <td class="center">K3</td>
+              <td class="center">60%</td>
+            </tr>
+            <tr>
+              <td><strong>CO4</strong></td>
+              <td>Analyse computer arithmetic, searching, sorting and recursive algorithms implemented in Python.</td>
+              <td class="center">K4</td>
+              <td class="center">60%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-note">* Cognitive Knowledge Level: K1 - Remember, K2 - Understand, K3 - Apply, K4 - Analyse, K5 - Evaluate, K6 - Create[cite: 2].</div>
+    </div>
+
+    <!-- CO-PO Mapping -->
+    <div class="cis-group">
+      <div class="cis-title">CO – PO Mapping Matrix</div>
+      <div class="scroll-hint">&larr; Swipe sideways to view all Program Outcomes &rarr;</div>
+      <div class="table-responsive">
+        <table class="academic-table center">
+          <thead>
+            <tr>
+              <th style="text-align: left;">CO</th>
+              <th>PO1</th>
+              <th>PO2</th>
+              <th>PO3</th>
+              <th>PO4</th>
+              <th>PO5</th>
+              <th>PO6</th>
+              <th>PO7</th>
+              <th>PO8</th>
+              <th>PO9</th>
+              <th>PO10</th>
+              <th>PO11</th>
+              <th>PO12</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left;"><strong>CO1</strong></td>
+              <td>3</td>
+              <td>3</td>
+              <td>2</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>CO2</strong></td>
+              <td>3</td>
+              <td>3</td>
+              <td>3</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>CO3</strong></td>
+              <td>3</td>
+              <td>3</td>
+              <td>3</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>CO4</strong></td>
+              <td>3</td>
+              <td>3</td>
+              <td>2</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-note">Correlation levels: 1: Low &nbsp;|&nbsp; 2: Moderate &nbsp;|&nbsp; 3: High[cite: 2]</div>
+
+      <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">
+        <strong>NBA Program Outcomes (POs):</strong> PO1: Engineering Knowledge; PO2: Problem Analysis; PO3: Design/Development of Solutions; PO4: Conduct Investigations of Complex Problems; PO5: Modern Tool Usage; PO6: The Engineer and Society; PO7: Environment and Sustainability; PO8: Ethics; PO9: Individual and Team Work; PO10: Communication; PO11: Project Management and Finance; PO12: Life Long Learning[cite: 2].
+      </div>
+    </div>
+
+    <!-- CO-PSO Mapping -->
+    <div class="cis-group">
+      <div class="cis-title">CO – PSO Mapping Matrix</div>
+      <div class="table-responsive" style="max-width: 440px;">
+        <table class="academic-table center" style="min-width: 100%;">
+          <thead>
+            <tr>
+              <th style="text-align: left;">Course Outcome</th>
+              <th>PSO-1</th>
+              <th>PSO-2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left;"><strong>CO1</strong></td>
+              <td>3</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>CO2</strong></td>
+              <td>3</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>CO3</strong></td>
+              <td>3</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>CO4</strong></td>
+              <td>3</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Average</strong></td>
+              <td><strong>3</strong></td>
+              <td><strong>1</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size: 0.9rem; margin-top: 0.6rem;">
+        <p style="margin: 0.35rem 0;"><strong>PSO-1:</strong> Graduates will demonstrate the ability to logically apply, analyze, design, and develop software solutions to address various problems, contributing to the betterment of society and its evolving needs[cite: 3].</p>
+        <p style="margin: 0.35rem 0;"><strong>PSO-2:</strong> Graduates shall leverage research, innovation, and appropriate technology across diverse programming domains[cite: 3].</p>
+      </div>
+    </div>
+
+    <!-- Hour-Wise Lesson Plan -->
+    <div class="cis-group">
+      <div class="cis-title">Hour-Wise Lesson Plan (48 Hours)</div>
+      <div class="scroll-hint">&larr; Swipe sideways to view schedules and pedagogy &rarr;</div>
+      <div class="table-responsive">
+        <table class="academic-table" style="min-width: 680px;">
+          <thead>
+            <tr>
+              <th style="width: 40px;">#</th>
+              <th style="width: 50px;">Mod.</th>
+              <th>Topic / Portions Planned</th>
+              <th style="width: 210px;">Planned Schedule</th>
+              <th style="width: 80px;">Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Module 1 -->
+            <tr><td>1</td><td>1</td><td>Introduction to Problem Solving - Problems, Solutions and Problem Types</td><td>03-Sep-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>2</td><td>1</td><td>Understanding the Problem - Inputs, Outputs, Constraints and Assumptions</td><td>07-Sep-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>3</td><td>1</td><td>Pólya's Four-Step Method - Understand and Devise a Plan</td><td>10-Sep-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>4</td><td>1</td><td>Pólya's Method - Carry Out the Plan and Look Back</td><td>11-Sep-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>5</td><td>1</td><td>Problem Solving Strategies - Trial and Error, Working Backwards, Analogy</td><td>14-Sep-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>6</td><td>1</td><td>Problem Solving Strategies - Divide and Conquer, Simplification, Heuristics</td><td>17-Sep-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>7</td><td>1</td><td>Psychology of Problem Solving - Insight, Mental Set and Functional Fixedness</td><td>18-Sep-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>8</td><td>1</td><td>Creative Problem Solving - Divergent and Convergent Thinking</td><td>24-Sep-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>9</td><td>1</td><td>Creative Problem Solving Techniques - Brainstorming and Mind Maps</td><td>25-Sep-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>10</td><td>1</td><td>Problem Solving Case Studies and Group Activity</td><td>28-Sep-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>11</td><td>1</td><td>Review and Problem Solving - Module 1</td><td>01-Oct-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>12</td><td>1</td><td>Module 1 Discussion &amp; Assessment</td><td>05-Oct-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+
+            <!-- Module 2 -->
+            <tr><td>13</td><td>2</td><td>Computational Thinking - Overview and Pillars</td><td>08-Oct-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>14</td><td>2</td><td>Decomposition - Breaking Problems into Sub-problems</td><td>09-Oct-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>15</td><td>2</td><td>Pattern Recognition and Generalisation</td><td>12-Oct-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>16</td><td>2</td><td>Abstraction and Modelling</td><td>15-Oct-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>17</td><td>2</td><td>Algorithms - Definition, Properties and Representation</td><td>16-Oct-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>18</td><td>2</td><td>Flowcharts - Symbols and Construction</td><td>19-Oct-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>19</td><td>2</td><td>Pseudocode - Sequence, Selection and Iteration</td><td>22-Oct-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>20</td><td>2</td><td>Designing Algorithms - Worked Examples</td><td>23-Oct-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>21</td><td>2</td><td>Algorithm Correctness and Tracing</td><td>26-Oct-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>22</td><td>2</td><td>Algorithm Efficiency - Time and Space Introduction</td><td>29-Oct-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>23</td><td>2</td><td>Review and Problem Solving - Module 2</td><td>30-Oct-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>24</td><td>2</td><td>Module 2 Discussion &amp; Assessment</td><td>02-Nov-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+
+            <!-- Module 3 -->
+            <tr><td>25</td><td>3</td><td>Introduction to Python - Interpreter, IDLE and Running Programs</td><td>11-Sep-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>26</td><td>3</td><td>Variables, Data Types and Expressions</td><td>11-Sep-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>27</td><td>3</td><td>Input, Output and Operators</td><td>18-Sep-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>28</td><td>3</td><td>Decision Making - if, if-else, elif</td><td>18-Sep-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>29</td><td>3</td><td>Loops - while and for, break and continue</td><td>25-Sep-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>30</td><td>3</td><td>Nested Loops and Pattern Programs</td><td>25-Sep-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>31</td><td>3</td><td>Functions - Definition, Arguments and Return Values</td><td>09-Oct-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>32</td><td>3</td><td>Scope, Default and Keyword Arguments; Recursion Basics</td><td>09-Oct-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>33</td><td>3</td><td>Strings - Operations and Methods</td><td>16-Oct-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>34</td><td>3</td><td>Lists and Tuples</td><td>16-Oct-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>35</td><td>3</td><td>Dictionaries and Sets</td><td>23-Oct-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>36</td><td>3</td><td>Review and Problem Solving - Module 3</td><td>23-Oct-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+
+            <!-- Module 4 -->
+            <tr><td>37</td><td>4</td><td>Number Systems and Representation in Computers</td><td>05-Nov-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>38</td><td>4</td><td>Computer Arithmetic Algorithms - Binary Addition and Subtraction</td><td>06-Nov-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>39</td><td>4</td><td>Computer Arithmetic Algorithms - Multiplication and Division</td><td>09-Nov-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>40</td><td>4</td><td>Floating Point Representation and Precision Issues</td><td>12-Nov-2026, Period 4 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>41</td><td>4</td><td>Classic Algorithms - GCD, Prime Numbers and Factorisation</td><td>30-Oct-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>42</td><td>4</td><td>Searching - Linear and Binary Search</td><td>30-Oct-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>43</td><td>4</td><td>Sorting - Bubble, Selection and Insertion Sort</td><td>06-Nov-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>44</td><td>4</td><td>Recursion - Factorial, Fibonacci and Towers of Hanoi</td><td>06-Nov-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>45</td><td>4</td><td>File Handling in Python</td><td>13-Nov-2026, Lab, Period 5 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>46</td><td>4</td><td>Mini Project - Applying Problem Solving Steps using Python</td><td>13-Nov-2026, Lab, Period 6 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>47</td><td>4</td><td>Review and Problem Solving - Module 4</td><td>13-Nov-2026, Period 1 (1 Hr)</td><td>L, P1, P2</td></tr>
+            <tr><td>48</td><td>4</td><td>Overall Course Review and Assessment</td><td>16-Nov-2026, Period 3 (1 Hr)</td><td>L, P1, P2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-note">
+        <strong>Teaching Methodology:</strong> L - Lecture, A - Assignment, S - Seminar, T - Tutorial.<br>
+        <strong>Pedagogy Tools:</strong> P1 - Chalk and Board, P2 - PowerPoint Presentation, P3 - Flipped Classroom, P4 - AI Tools Based Teaching, P5 - Handwritten Notes[cite: 4, 5, 6].
+      </div>
+    </div>
+
+    <!-- Textbooks and References -->
+    <div class="cis-group">
+      <div class="cis-title">Textbooks &amp; References</div>
+      <p style="margin-bottom: 0.35rem;"><strong>Textbooks</strong></p>
+      <ul class="simple-list">
+        <li><strong>T1.</strong> Maureen Sprankle, Jim Hubbard, <em>Problem Solving &amp; Programming Concepts</em>, Pearson, 9/e, 2011.</li>
+        <li><strong>T2.</strong> George Pólya, <em>How to Solve It: A New Aspect of Mathematical Method</em>, Princeton University Press, 2/e, 2015.</li>
+        <li><strong>T3.</strong> Cay S. Horstmann, Rance D. Necaise, <em>Python for Everyone</em>, Wiley, 3/e, 2024.</li>
+      </ul>
+
+      <p style="margin-bottom: 0.35rem; margin-top: 1rem;"><strong>References</strong></p>
+      <ul class="simple-list">
+        <li>1. Donald Treffinger, Scott Isaksen, Brian Stead-Dorval, <em>Creative Problem Solving: An Introduction</em>, Prufrock Press, 4/e, 2005.</li>
+        <li>2. Spielman, R. M., Dumper, K., Jenkins, W., Lacombe, A., Lovett, M., &amp; Perlmutter, M., <em>Psychology (Sec. Problem Solving)</em>, H5P Edition, 1/e, 2021.</li>
+        <li>3. G. Venkatesh, Madhavan Mukund, <em>Computational Thinking: A Primer for Programmers and Data Scientists</em>, Mylspot Education Services Pvt Ltd, 1/e, 2020.</li>
+        <li>4. Israel Koren, <em>Computer Arithmetic Algorithms</em>, AK Peters/CRC Press, 2/e, 2001.</li>
+        <li>5. John V. Guttag, <em>Introduction to Computation and Programming Using Python</em>, PHI, 2/e, 2016[cite: 6].</li>
+      </ul>
+    </div>
+
+    <!-- Content Beyond Syllabus & Signatures -->
+    <div class="cis-group">
+      <div class="cis-title">Content Beyond Syllabus &amp; Online Portals</div>
+      <div class="scroll-hint">&larr; Swipe sideways to view details &rarr;</div>
+      <div class="table-responsive">
+        <table class="academic-table" style="min-width: 540px;">
+          <thead>
+            <tr>
+              <th style="width: 40px;">#</th>
+              <th>Topic</th>
+              <th>Remedial Action / Solution</th>
+              <th style="width: 170px;">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>Python in Practice: Jupyter / Google Colab</strong></td>
+              <td>Hands-on session on writing and sharing Python notebooks for problem solving</td>
+              <td>September 22, 2026</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>Objects in Python</strong></td>
+              <td>Lecture and Hands-on session on classes and objects in Python</td>
+              <td>September 29, 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="font-size: 0.95rem; margin-top: 1rem;">
+        <strong>Related Online Courses:</strong>
+        <ul class="simple-list" style="margin-top: 0.35rem;">
+          <li>NPTEL: <a href="https://onlinecourses.nptel.ac.in/noc21_cs32/preview" target="_blank" rel="noopener" style="color: #000;">noc21_cs32 Preview</a></li>
+          <li>OpenTextBC: <a href="https://opentextbc.ca/h5ppsychology/chapter/problem-solving/" target="_blank" rel="noopener" style="color: #000;">opentextbc.ca/h5ppsychology/chapter/problem-solving/</a></li>
+        </ul>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.8rem; border-top: 1px solid var(--border-line); padding-top: 1.2rem; margin-top: 2rem; font-size: 0.92rem;">
+        <div><strong>Prepared by:</strong> H A Rahulnath (Faculty in Charge)</div>
+        <div><strong>Approved by:</strong> Dr. Gunasekharan S (HOD, CSE)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB 2: DOWNLOADS -->
+  <div id="tab-downloads" class="tab-content" role="tabpanel">
+    <input id="q" class="search-box" type="search" placeholder="Search topics, lecture notes, or assignments..." autocomplete="off">
+    <div id="list">Loading course contents...</div>
+  </div>
+
+</main>
+
+<script src="topics.js"></script>
+<script>
+  // Shrinking logo banner on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.getElementById('site-header');
+    if (window.scrollY > 8) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }, { passive: true });
+
+  // Tab Switching Logic
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabPanes = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-tab');
+
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const targetPane = document.getElementById(targetId);
+      if (targetPane) {
+        targetPane.classList.add('active');
+      }
+    });
+  });
+
+  // Downloads filter and rendering
+  const data = (typeof TOPICS !== "undefined") ? TOPICS : [];
+  if (!data.length) {
+    document.getElementById("list").innerHTML = `<div class="status-message">No course materials found or <code>topics.js</code> failed to load.</div>`;
+  } else {
+    render("");
+  }
+
+  function render(filter) {
+    const f = filter.toLowerCase().trim();
+    const html = data.map(t => {
+      const items = t.items.filter(i =>
+        !f || 
+        t.title.toLowerCase().includes(f) ||
+        i.label.toLowerCase().includes(f) || 
+        i.type.toLowerCase().includes(f)
+      );
+
+      if (!items.length) return "";
+
+      return `
+        <details ${f ? "open" : ""}>
+          <summary>${t.title}</summary>
+          <ul class="file-list">
+            ${items.map(i => `
+              <li>
+                <div class="file-info-col">
+                  <span class="file-type">[${i.type}]</span>
+                  <span class="file-title">${i.label}</span>
+                  ${i.due ? `<span class="file-due">(Due: ${i.due})</span>` : ""}
+                </div>
+                <a class="download-link" href="${i.file}" download>Download</a>
+              </li>
+            `).join("")}
+          </ul>
+        </details>
+      `;
+    }).join("");
+
+    document.getElementById("list").innerHTML = html || `<div class="status-message">No topics matching your query.</div>`;
+  }
+
+  const queryInput = document.getElementById("q");
+  if (queryInput) {
+    queryInput.addEventListener("input", e => render(e.target.value));
+  }
+</script>
+
+</body>
+</html>
