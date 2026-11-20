@@ -4,6 +4,11 @@ const TOPICS = [
     title: "Question Bank, Sample Pseudocode/Flowcharts/PythonCode",
     items: [
       {
+        label: "Series 2 Model Questions",
+        file: "files/notes/Model-2.pdf",
+        type: "Model Questions",
+      },
+      {
         label: "Sample Pseudocode Questions with Solutions",
         file: "files/notes/20sams.pdf",
         type: "Samples",
